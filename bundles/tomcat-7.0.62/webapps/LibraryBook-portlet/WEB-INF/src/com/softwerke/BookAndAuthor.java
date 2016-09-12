@@ -101,16 +101,25 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 			List<Book> bookList = BookLocalServiceUtil.getBooks(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 			List<Author> authorList = AuthorLocalServiceUtil.getAuthors(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 		
+			for (int i=0; i<authorList.size(); i++){
+				long authorId=authorList.get(i).getAuthorId();
+				long count = BookLocalServiceUtil.countByAuthor(authorId);
+				request.setAttribute("count", count);
+				Author author = AuthorLocalServiceUtil.getAuthor(authorId);
+				author.setNumberOfBooks(count);
+			}
 //			Author author = AuthorLocalServiceUtil.getAuthor(book.getAuthorId());
 //			String authorNamee = author.getAuthorName();
 //			long count = BookLocalServiceUtil.countByAuthor(authorId);
-//			
 			
 			request.setAttribute("bookListArray", bookList);
 			request.setAttribute("authorListArray", authorList);
 		} catch (SystemException e) {
 			SessionErrors.add(request, "SystemException");
 			log.info(MISTAKE_ATTRIBUTES, e);
+		} catch (PortalException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	    	
 		if (ADD_BOOK.equalsIgnoreCase(pageName)) {
