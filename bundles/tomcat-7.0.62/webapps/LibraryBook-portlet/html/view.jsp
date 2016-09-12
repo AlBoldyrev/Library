@@ -18,7 +18,6 @@
 <liferay-theme:defineObjects />
 <portlet:defineObjects />
 
-
 <portlet:renderURL var="addBookVar">
 	<portlet:param name="pageName" value="<%=BookAndAuthor.ADD_BOOK %>"/>
 </portlet:renderURL>
@@ -43,23 +42,28 @@
 
 <%-- http://stackoverflow.com/questions/26125014/how-to-solve-warning-when-using-liferay-uisearch-container-in-jsp --%> 
 <liferay-ui:search-container>
-	<liferay-ui:search-container-results results="${bookListArray}" />
-	
-	<liferay-ui:search-container-row className="builder.model.Book" modelVar="aBook">
-		<liferay-ui:search-container-column-text property="bookName" name="book-Name" />
-		<liferay-ui:search-container-column-text property="bookDescription" name="description"/>
-		<liferay-ui:search-container-column-text property="authorName" name="Author"/>
-		<liferay-ui:search-container-column-jsp path="/html/actionBook.jsp" align="right" />
-	</liferay-ui:search-container-row>
+    <liferay-ui:search-container-results results="${bookListArray}" />
+    <liferay-ui:search-container-row className="builder.model.Book" keyProperty="bookId" modelVar="aBook">
+        <liferay-ui:search-container-column-text property="bookName" name="book-Name" />
+        <liferay-ui:search-container-column-text property="bookDescription" name="description" />
+        <%
+            Author bookAuthor = AuthorLocalServiceUtil.getAuthor(aBook.getAuthorId());
+        %>
+        <liferay-ui:search-container-column-text name="Author" value="<%=bookAuthor.getAuthorName()  %>" />
+        <liferay-ui:search-container-column-jsp path="/html/actionBook.jsp" align="right" />
+    </liferay-ui:search-container-row>
     <liferay-ui:search-iterator />
 </liferay-ui:search-container>
 
 <liferay-ui:search-container>
-	<liferay-ui:search-container-results results="${authorListArray}" />
-	<liferay-ui:search-container-row className="builder.model.Author" modelVar="aAuthor">
-		<liferay-ui:search-container-column-text property="authorName" name="author-Name"/>
-		<liferay-ui:search-container-column-text property="numberOfBooks" name="count"/>
-		<liferay-ui:search-container-column-jsp path="/html/actionAuthor.jsp" align="right" />
-	</liferay-ui:search-container-row>
+    <liferay-ui:search-container-results results="${authorListArray}" />
+    <liferay-ui:search-container-row className="builder.model.Author" keyProperty="authorId" modelVar="aAuthor">
+        <liferay-ui:search-container-column-text property="authorName" name="author-Name" />
+        <%
+            long count = BookLocalServiceUtil.countByAuthor(aAuthor.getAuthorId());
+        %>
+        <liferay-ui:search-container-column-text name="count" value="<%=count  %>" />
+        <liferay-ui:search-container-column-jsp path="/html/actionAuthor.jsp" align="right" />
+    </liferay-ui:search-container-row>
     <liferay-ui:search-iterator />
 </liferay-ui:search-container>

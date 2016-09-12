@@ -22,7 +22,7 @@
 		
 		<aui:select name="author" label="Author-Name">
    		 	<c:forEach var="currAuthor" items="${authorListArray}">
-     			   <aui:option value="${currAuthor.authorName}" label=" ${currAuthor.authorName}"></aui:option>
+     			   <aui:option value="${currAuthor.authorId}" label=" ${currAuthor.authorName}"></aui:option>
     		</c:forEach>
 		</aui:select>
 	
