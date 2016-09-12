@@ -108,9 +108,6 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 				Author author = AuthorLocalServiceUtil.getAuthor(authorId);
 				author.setNumberOfBooks(count);
 			}
-//			Author author = AuthorLocalServiceUtil.getAuthor(book.getAuthorId());
-//			String authorNamee = author.getAuthorName();
-//			long count = BookLocalServiceUtil.countByAuthor(authorId);
 			
 			request.setAttribute("bookListArray", bookList);
 			request.setAttribute("authorListArray", authorList);
@@ -118,9 +115,8 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 			SessionErrors.add(request, "SystemException");
 			log.info(MISTAKE_ATTRIBUTES, e);
 		} catch (PortalException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			SessionErrors.add(request, "PortalException");
+			log.info(MISTAKE_ATTRIBUTES, e);		}
 	    	
 		if (ADD_BOOK.equalsIgnoreCase(pageName)) {
 			include(ADD_BOOK_PAGE_PATH, request, response);
@@ -174,13 +170,11 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 		String bookName = ParamUtil.getString(actionRequest,"bookName");
 		String bookDescription = ParamUtil.getString(actionRequest, "bookDescription");
 		long authorId = ParamUtil.getLong(actionRequest, "author");
-		String authorName = ParamUtil.getString(actionRequest, "author");
 
 		Book book = BookLocalServiceUtil.createBook(CounterLocalServiceUtil.increment());
 		book.setBookName(bookName);
 		book.setBookDescription(bookDescription);
 		book.setAuthorId(authorId);
-		book.setAuthorName(authorName);
 		book=BookLocalServiceUtil.addBook(book);
 	
 //			Author author = AuthorLocalServiceUtil.getAuthor(book.getAuthorId());
