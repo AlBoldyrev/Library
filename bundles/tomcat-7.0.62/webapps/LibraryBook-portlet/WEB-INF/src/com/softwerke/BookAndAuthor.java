@@ -98,12 +98,9 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 	
 	public void render(RenderRequest request, RenderResponse response)
 			throws PortletException, IOException {
-
 		
 		String pageName = request.getParameter("pageName");
-		
-		
-	    	
+	
 		if (ADD_BOOK.equalsIgnoreCase(pageName)) {
 			List<AuthorModel> authorModelList;
 			try {

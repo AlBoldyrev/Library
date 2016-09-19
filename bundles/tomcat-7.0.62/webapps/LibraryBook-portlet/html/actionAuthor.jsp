@@ -1,3 +1,4 @@
+<%@page import="com.softwerke.AuthorModel"%>
 <%@page import="com.softwerke.BookAndAuthor"%>
 <%@page import="builder.model.Book"%>
 <%@page import="builder.model.Author"%>
@@ -13,7 +14,7 @@
 <%
 	ResultRow row = (ResultRow) request.getAttribute(BookAndAuthor.SEARCH_CONTAINER_RESULT_ROW);
 
-	Author author = (Author) row.getObject();
+	AuthorModel author = (AuthorModel) row.getObject();
 %>
 
 

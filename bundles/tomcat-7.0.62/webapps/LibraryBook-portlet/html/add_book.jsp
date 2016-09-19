@@ -21,7 +21,7 @@
 	<aui:input  name="bookDescription" value=""  label="Description"/>
 		
 		<aui:select name="author" label="Author-Name">
-   		 	<c:forEach var="currAuthor" items="${authorListArray}">
+   		 	<c:forEach var="currAuthor" items="${authorModels}">
      			   <aui:option value="${currAuthor.authorId}" label=" ${currAuthor.authorName}"></aui:option>
     		</c:forEach>
 		</aui:select>
