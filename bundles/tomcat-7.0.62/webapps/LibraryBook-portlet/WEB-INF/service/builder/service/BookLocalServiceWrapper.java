@@ -277,14 +277,12 @@ public class BookLocalServiceWrapper implements BookLocalService,
 	}
 
 	@Override
-	public java.util.List<builder.model.Book> getByAuthor(long authorId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<builder.model.Book> getByAuthor(long authorId) {
 		return _bookLocalService.getByAuthor(authorId);
 	}
 
 	@Override
-	public long countByAuthor(long authorId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int countByAuthor(long authorId) {
 		return _bookLocalService.countByAuthor(authorId);
 	}
 

@@ -9,7 +9,6 @@
 			<generator class="assigned" />
 		</id>
 		<property name="authorName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
-		<property name="numberOfBooks" type="com.liferay.portal.dao.orm.hibernate.LongType" />
 	</class>
 	<class name="builder.model.impl.BookImpl" table="librarian_Book">
 		<id name="bookId" type="long">
@@ -18,6 +17,5 @@
 		<property name="bookName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="bookDescription" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 		<property name="authorId" type="com.liferay.portal.dao.orm.hibernate.LongType" />
-		<property name="authorName" type="com.liferay.portal.dao.orm.hibernate.StringType" />
 	</class>
 </hibernate-mapping>

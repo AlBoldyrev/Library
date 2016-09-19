@@ -247,9 +247,7 @@ public interface BookLocalService extends BaseLocalService, InvokableLocalServic
 		throws java.lang.Throwable;
 
 	@Transactional(propagation = Propagation.SUPPORTS, readOnly = true)
-	public java.util.List<builder.model.Book> getByAuthor(long authorId)
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public java.util.List<builder.model.Book> getByAuthor(long authorId);
 
-	public long countByAuthor(long authorId)
-		throws com.liferay.portal.kernel.exception.SystemException;
+	public int countByAuthor(long authorId);
 }

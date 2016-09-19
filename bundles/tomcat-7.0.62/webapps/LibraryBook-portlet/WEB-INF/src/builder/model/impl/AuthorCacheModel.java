@@ -35,14 +35,12 @@ import java.io.ObjectOutput;
 public class AuthorCacheModel implements CacheModel<Author>, Externalizable {
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(5);
 
 		sb.append("{authorId=");
 		sb.append(authorId);
 		sb.append(", authorName=");
 		sb.append(authorName);
-		sb.append(", numberOfBooks=");
-		sb.append(numberOfBooks);
 		sb.append("}");
 
 		return sb.toString();
@@ -61,8 +59,6 @@ public class AuthorCacheModel implements CacheModel<Author>, Externalizable {
 			authorImpl.setAuthorName(authorName);
 		}
 
-		authorImpl.setNumberOfBooks(numberOfBooks);
-
 		authorImpl.resetOriginalValues();
 
 		return authorImpl;
@@ -72,7 +68,6 @@ public class AuthorCacheModel implements CacheModel<Author>, Externalizable {
 	public void readExternal(ObjectInput objectInput) throws IOException {
 		authorId = objectInput.readLong();
 		authorName = objectInput.readUTF();
-		numberOfBooks = objectInput.readLong();
 	}
 
 	@Override
@@ -86,11 +81,8 @@ public class AuthorCacheModel implements CacheModel<Author>, Externalizable {
 		else {
 			objectOutput.writeUTF(authorName);
 		}
-
-		objectOutput.writeLong(numberOfBooks);
 	}
 
 	public long authorId;
 	public String authorName;
-	public long numberOfBooks;
 }

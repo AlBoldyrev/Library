@@ -52,7 +52,6 @@ public class BookWrapper implements Book, ModelWrapper<Book> {
 		attributes.put("bookName", getBookName());
 		attributes.put("bookDescription", getBookDescription());
 		attributes.put("authorId", getAuthorId());
-		attributes.put("authorName", getAuthorName());
 
 		return attributes;
 	}
@@ -81,12 +80,6 @@ public class BookWrapper implements Book, ModelWrapper<Book> {
 
 		if (authorId != null) {
 			setAuthorId(authorId);
-		}
-
-		String authorName = (String)attributes.get("authorName");
-
-		if (authorName != null) {
-			setAuthorName(authorName);
 		}
 	}
 
@@ -188,26 +181,6 @@ public class BookWrapper implements Book, ModelWrapper<Book> {
 	@Override
 	public void setAuthorId(long authorId) {
 		_book.setAuthorId(authorId);
-	}
-
-	/**
-	* Returns the author name of this book.
-	*
-	* @return the author name of this book
-	*/
-	@Override
-	public java.lang.String getAuthorName() {
-		return _book.getAuthorName();
-	}
-
-	/**
-	* Sets the author name of this book.
-	*
-	* @param authorName the author name of this book
-	*/
-	@Override
-	public void setAuthorName(java.lang.String authorName) {
-		_book.setAuthorName(authorName);
 	}
 
 	@Override

@@ -267,13 +267,11 @@ public class BookLocalServiceUtil {
 		return getService().invokeMethod(name, parameterTypes, arguments);
 	}
 
-	public static java.util.List<builder.model.Book> getByAuthor(long authorId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static java.util.List<builder.model.Book> getByAuthor(long authorId) {
 		return getService().getByAuthor(authorId);
 	}
 
-	public static long countByAuthor(long authorId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public static int countByAuthor(long authorId) {
 		return getService().countByAuthor(authorId);
 	}
 

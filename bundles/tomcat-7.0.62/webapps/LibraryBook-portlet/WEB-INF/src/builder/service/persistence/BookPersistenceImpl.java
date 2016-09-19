@@ -824,7 +824,6 @@ public class BookPersistenceImpl extends BasePersistenceImpl<Book>
 		bookImpl.setBookName(book.getBookName());
 		bookImpl.setBookDescription(book.getBookDescription());
 		bookImpl.setAuthorId(book.getAuthorId());
-		bookImpl.setAuthorName(book.getAuthorName());
 
 		return bookImpl;
 	}

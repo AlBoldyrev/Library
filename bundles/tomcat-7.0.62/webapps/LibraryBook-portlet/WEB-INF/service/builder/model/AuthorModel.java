@@ -86,20 +86,6 @@ public interface AuthorModel extends BaseModel<Author> {
 	 */
 	public void setAuthorName(String authorName);
 
-	/**
-	 * Returns the number of books of this author.
-	 *
-	 * @return the number of books of this author
-	 */
-	public long getNumberOfBooks();
-
-	/**
-	 * Sets the number of books of this author.
-	 *
-	 * @param numberOfBooks the number of books of this author
-	 */
-	public void setNumberOfBooks(long numberOfBooks);
-
 	@Override
 	public boolean isNew();
 

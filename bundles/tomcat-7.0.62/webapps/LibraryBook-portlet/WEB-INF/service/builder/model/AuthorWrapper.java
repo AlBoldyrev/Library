@@ -50,7 +50,6 @@ public class AuthorWrapper implements Author, ModelWrapper<Author> {
 
 		attributes.put("authorId", getAuthorId());
 		attributes.put("authorName", getAuthorName());
-		attributes.put("numberOfBooks", getNumberOfBooks());
 
 		return attributes;
 	}
@@ -67,12 +66,6 @@ public class AuthorWrapper implements Author, ModelWrapper<Author> {
 
 		if (authorName != null) {
 			setAuthorName(authorName);
-		}
-
-		Long numberOfBooks = (Long)attributes.get("numberOfBooks");
-
-		if (numberOfBooks != null) {
-			setNumberOfBooks(numberOfBooks);
 		}
 	}
 
@@ -134,26 +127,6 @@ public class AuthorWrapper implements Author, ModelWrapper<Author> {
 	@Override
 	public void setAuthorName(java.lang.String authorName) {
 		_author.setAuthorName(authorName);
-	}
-
-	/**
-	* Returns the number of books of this author.
-	*
-	* @return the number of books of this author
-	*/
-	@Override
-	public long getNumberOfBooks() {
-		return _author.getNumberOfBooks();
-	}
-
-	/**
-	* Sets the number of books of this author.
-	*
-	* @param numberOfBooks the number of books of this author
-	*/
-	@Override
-	public void setNumberOfBooks(long numberOfBooks) {
-		_author.setNumberOfBooks(numberOfBooks);
 	}
 
 	@Override

@@ -1,3 +1,4 @@
+<%@page import="com.liferay.portal.kernel.exception.PortalException"%>
 <%@ taglib uri="http://java.sun.com/portlet_2_0" prefix="portlet" %>
 <%@ taglib uri="http://liferay.com/tld/aui" prefix="aui" %>
 <%@ taglib uri="http://liferay.com/tld/portlet" prefix="liferay-portlet" %>
@@ -30,40 +31,42 @@
 
 <a href="${addAuthorVar}"><h4><liferay-ui:message key="add-author"/></h4></a>
 
-<c:set var="book" value="${aBook}" scope="request" />
-<c:set var="author" value="${aAuthor}" scope="request" />
-
-
 <liferay-ui:success key="author-added-success" message="author-has-been-added-successfully" />
 <liferay-ui:error key="author-added-failed" message="fail-to-add-Author" />
+
 <liferay-ui:success key="book-added-success" message="book-has-been-added-successfully" />
 <liferay-ui:error key="book-added-failed" message="fail-to-add-Book" />
 
+<liferay-ui:success key="deleted-author" message="author-has-been-deleted-successfully" />
+<liferay-ui:error key="authorIsNull" message="no-author-to-delete" />
+
+<liferay-ui:success key="deleted-book" message="book-has-been-deleted-successfully" />
+<liferay-ui:error key="bookIsNull" message="no-book-to-delete" />
+
+<liferay-ui:error key="authorNameisNull" message="please-enter-author-name" />
 
 <%-- http://stackoverflow.com/questions/26125014/how-to-solve-warning-when-using-liferay-uisearch-container-in-jsp --%> 
+
+
+
 <liferay-ui:search-container>
-    <liferay-ui:search-container-results results="${bookListArray}" />
-    <liferay-ui:search-container-row className="builder.model.Book" keyProperty="bookId" modelVar="aBook">
+    <liferay-ui:search-container-results results="${bookModels}" />
+    <liferay-ui:search-container-row className="com.softwerke.BookModel" keyProperty= "bookId" modelVar="aBook">
+       	<liferay-ui:search-container-column-text property="bookId" name="book-Name" />
         <liferay-ui:search-container-column-text property="bookName" name="book-Name" />
-        <liferay-ui:search-container-column-text property="bookDescription" name="description" />
-        <%
-            Author bookAuthor = AuthorLocalServiceUtil.getAuthor(aBook.getAuthorId());
-        %>
-        <liferay-ui:search-container-column-text name="Author" value="<%=bookAuthor.getAuthorName()  %>" />
-        <liferay-ui:search-container-column-jsp path="/html/actionBook.jsp" align="right" />
+        <liferay-ui:search-container-column-text property="bookDescription"  name="description" />
+		<liferay-ui:search-container-column-text property="authorName"  name="Author Name" />
+        <liferay-ui:search-container-column-jsp path="/html/actionBook.jsp" />
     </liferay-ui:search-container-row>
     <liferay-ui:search-iterator />
 </liferay-ui:search-container>
 
 <liferay-ui:search-container>
-    <liferay-ui:search-container-results results="${authorListArray}" />
-    <liferay-ui:search-container-row className="builder.model.Author" keyProperty="authorId" modelVar="aAuthor">
+    <liferay-ui:search-container-results results="${authorModels}" />
+    <liferay-ui:search-container-row className="com.softwerke.AuthorModel" keyProperty="authorId" modelVar="aAuthor">
         <liferay-ui:search-container-column-text property="authorName" name="author-Name" />
-        <%
-            long count = BookLocalServiceUtil.countByAuthor(aAuthor.getAuthorId());
-        %>
-        <liferay-ui:search-container-column-text name="count" value="<%=count  %>" />
-        <liferay-ui:search-container-column-jsp path="/html/actionAuthor.jsp" align="right" />
+        <liferay-ui:search-container-column-text property="count" name="count" />
+        <liferay-ui:search-container-column-jsp path="/html/actionAuthor.jsp" />
     </liferay-ui:search-container-row>
     <liferay-ui:search-iterator />
 </liferay-ui:search-container>

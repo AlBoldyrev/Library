@@ -76,7 +76,6 @@ public class BookClp extends BaseModelImpl<Book> implements Book {
 		attributes.put("bookName", getBookName());
 		attributes.put("bookDescription", getBookDescription());
 		attributes.put("authorId", getAuthorId());
-		attributes.put("authorName", getAuthorName());
 
 		return attributes;
 	}
@@ -105,12 +104,6 @@ public class BookClp extends BaseModelImpl<Book> implements Book {
 
 		if (authorId != null) {
 			setAuthorId(authorId);
-		}
-
-		String authorName = (String)attributes.get("authorName");
-
-		if (authorName != null) {
-			setAuthorName(authorName);
 		}
 	}
 
@@ -207,29 +200,6 @@ public class BookClp extends BaseModelImpl<Book> implements Book {
 		}
 	}
 
-	@Override
-	public String getAuthorName() {
-		return _authorName;
-	}
-
-	@Override
-	public void setAuthorName(String authorName) {
-		_authorName = authorName;
-
-		if (_bookRemoteModel != null) {
-			try {
-				Class<?> clazz = _bookRemoteModel.getClass();
-
-				Method method = clazz.getMethod("setAuthorName", String.class);
-
-				method.invoke(_bookRemoteModel, authorName);
-			}
-			catch (Exception e) {
-				throw new UnsupportedOperationException(e);
-			}
-		}
-	}
-
 	public BaseModel<?> getBookRemoteModel() {
 		return _bookRemoteModel;
 	}
@@ -303,7 +273,6 @@ public class BookClp extends BaseModelImpl<Book> implements Book {
 		clone.setBookName(getBookName());
 		clone.setBookDescription(getBookDescription());
 		clone.setAuthorId(getAuthorId());
-		clone.setAuthorName(getAuthorName());
 
 		return clone;
 	}
@@ -356,7 +325,7 @@ public class BookClp extends BaseModelImpl<Book> implements Book {
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{bookId=");
 		sb.append(getBookId());
@@ -366,8 +335,6 @@ public class BookClp extends BaseModelImpl<Book> implements Book {
 		sb.append(getBookDescription());
 		sb.append(", authorId=");
 		sb.append(getAuthorId());
-		sb.append(", authorName=");
-		sb.append(getAuthorName());
 		sb.append("}");
 
 		return sb.toString();
@@ -375,7 +342,7 @@ public class BookClp extends BaseModelImpl<Book> implements Book {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("<model><model-name>");
 		sb.append("builder.model.Book");
@@ -397,10 +364,6 @@ public class BookClp extends BaseModelImpl<Book> implements Book {
 			"<column><column-name>authorId</column-name><column-value><![CDATA[");
 		sb.append(getAuthorId());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>authorName</column-name><column-value><![CDATA[");
-		sb.append(getAuthorName());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -411,7 +374,6 @@ public class BookClp extends BaseModelImpl<Book> implements Book {
 	private String _bookName;
 	private String _bookDescription;
 	private long _authorId;
-	private String _authorName;
 	private BaseModel<?> _bookRemoteModel;
 	private Class<?> _clpSerializerClass = builder.service.ClpSerializer.class;
 }

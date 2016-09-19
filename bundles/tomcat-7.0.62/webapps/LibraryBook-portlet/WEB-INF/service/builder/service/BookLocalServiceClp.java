@@ -660,8 +660,7 @@ public class BookLocalServiceClp implements BookLocalService {
 	}
 
 	@Override
-	public java.util.List<builder.model.Book> getByAuthor(long authorId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public java.util.List<builder.model.Book> getByAuthor(long authorId) {
 		Object returnObj = null;
 
 		try {
@@ -670,10 +669,6 @@ public class BookLocalServiceClp implements BookLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -688,8 +683,7 @@ public class BookLocalServiceClp implements BookLocalService {
 	}
 
 	@Override
-	public long countByAuthor(long authorId)
-		throws com.liferay.portal.kernel.exception.SystemException {
+	public int countByAuthor(long authorId) {
 		Object returnObj = null;
 
 		try {
@@ -698,10 +692,6 @@ public class BookLocalServiceClp implements BookLocalService {
 		}
 		catch (Throwable t) {
 			t = ClpSerializer.translateThrowable(t);
-
-			if (t instanceof com.liferay.portal.kernel.exception.SystemException) {
-				throw (com.liferay.portal.kernel.exception.SystemException)t;
-			}
 
 			if (t instanceof RuntimeException) {
 				throw (RuntimeException)t;
@@ -712,7 +702,7 @@ public class BookLocalServiceClp implements BookLocalService {
 			}
 		}
 
-		return ((Long)returnObj).longValue();
+		return ((Integer)returnObj).intValue();
 	}
 
 	private InvokableLocalService _invokableLocalService;

@@ -1,6 +1,7 @@
 package com.softwerke;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.portlet.ActionRequest;
@@ -52,8 +53,11 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 	public static final String BOOK = "bookEditAttribute";
 	public static final String BOOK_ID = "bookId";
 	
-	public static final String DELETE_SUCCESS = "Deleted Book Successfully";
+	public static final String DELETE_SUCCESS = "Deleting was successful!";
+	public static final String DELETE_ERROR = "There was a mistake while trying to delete something";
+	
 	public static final String UPDATE_SUCCESS = "Updated Book Successfully";
+	public static final String UPDATE_BOOK_ID_IS_NULL ="BookId was NULL";
 	
 	public static final String MISTAKE_ATTRIBUTES = "There was a mistake in setting attributes to request";
 	
@@ -62,8 +66,9 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 	public static final String SYSTEM_EXCEPTION_VIEW_BOOK = "There was SystemException when trying to view book";
 	public static final String SYSTEM_EXCEPTION_EDIT_BOOK = "There was SystemException when trying to edit book";
 	
-	public static final String ADD_BOOK_NOT_NULL = "The book was NOT NULL when you tried to add one";
-	public static final String ADD_BOOK_NULL = "The book was NULL when you tried to add one";
+	public static final String ADD_BOOK_NAME_NULL = "The bookName was NULL when you tried to add one";
+	public static final String ADD_BOOK_DESCRIPTION_NULL = "The bookDescription was NULL when you tried to add one";
+	public static final String ADD_BOOK_AUTHOR_ID_NULL = "The bookAuthorId was NULL when you tried to add one";
 	public static final String ADD_AUTHOR_NOT_NULL = "The author was NOT NULL when you tried to add one";
 	public static final String ADD_AUTHOR_NULL = "The author was NULL when you tried to add one";
 	public static final String ADD_BOOK_ERROR = "There was an error while adding book. It was last 'catch' block";
@@ -97,28 +102,18 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 		
 		String pageName = request.getParameter("pageName");
 		
-		try {
-			List<Book> bookList = BookLocalServiceUtil.getBooks(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
-			List<Author> authorList = AuthorLocalServiceUtil.getAuthors(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
 		
-			for (int i=0; i<authorList.size(); i++){
-				long authorId=authorList.get(i).getAuthorId();
-				long count = BookLocalServiceUtil.countByAuthor(authorId);
-				request.setAttribute("count", count);
-				Author author = AuthorLocalServiceUtil.getAuthor(authorId);
-				author.setNumberOfBooks(count);
-			}
-			
-			request.setAttribute("bookListArray", bookList);
-			request.setAttribute("authorListArray", authorList);
-		} catch (SystemException e) {
-			SessionErrors.add(request, "SystemException");
-			log.info(MISTAKE_ATTRIBUTES, e);
-		} catch (PortalException e) {
-			SessionErrors.add(request, "PortalException");
-			log.info(MISTAKE_ATTRIBUTES, e);		}
 	    	
 		if (ADD_BOOK.equalsIgnoreCase(pageName)) {
+			List<AuthorModel> authorModelList;
+			try {
+				authorModelList = getAllAuthors();
+				request.setAttribute("authorModels", authorModelList);
+			} catch (SystemException e) {
+				log.error("Couldn't get author's list. " + e.getMessage());
+				SessionErrors.add(request, "Internal error. Please try later.");
+			}
+		
 			include(ADD_BOOK_PAGE_PATH, request, response);
 		} else if (ADD_AUTHOR.equalsIgnoreCase(pageName)) {
 			include(ADD_AUTHOR_PAGE_PATH, request, response);
@@ -150,11 +145,50 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 			} 
 			include(VIEW_BOOK_PAGE_PATH, request, response);
 		} else {
-			
+			try {
+				List<Book> bookList = BookLocalServiceUtil.getBooks(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+				List<BookModel> bookModelList = new ArrayList<BookModel>();
+				
+				for (int i=0; i<bookList.size(); i++) {
+					Book currentBook = bookList.get(i);
+					BookModel bookModel = new BookModel();
+					
+					bookModel.setBookDescription(currentBook.getBookDescription());
+					bookModel.setBookName(currentBook.getBookName());
+					bookModel.setBookId(currentBook.getBookId());
+					
+					long authorId = currentBook.getAuthorId();
+					Author author;
+					try {
+						author = AuthorLocalServiceUtil.getAuthor(authorId);
+						bookModel.setAuthorName(author.getAuthorName());
+					} catch (PortalException e) {
+						// TODO handle exception
+					}
+				
+					
+					bookModelList.add(bookModel);
+				}
+				List<AuthorModel> authorModelList = getAllAuthors();
+				request.setAttribute("bookModels", bookModelList);
+				request.setAttribute("authorModels", authorModelList);
+				
+			} catch (SystemException e) {
+				SessionErrors.add(request, "SystemException");
+				log.info(MISTAKE_ATTRIBUTES, e);
+			}
 			include(VIEW_PAGE_PATH, request, response);
 		}    
 	}
-	
+			
+	private List<AuthorModel> getAllAuthors() throws SystemException{
+		List<AuthorModel> authors = new ArrayList<AuthorModel>();
+		List<Author> authorList = AuthorLocalServiceUtil.getAuthors(QueryUtil.ALL_POS, QueryUtil.ALL_POS);
+		for (Author author : authorList) {
+			authors.add(new AuthorModel(author));
+		}
+		return authors;
+	}
 	/**
 	 * This method adds book in your database. It's called when you submit "add book" form.
 	 * 
@@ -166,23 +200,35 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 	 */
 	
 	public void addBook(ActionRequest actionRequest, ActionResponse actionResponse) 
-			throws IOException, PortletException, SystemException {
+			throws IOException, PortletException, SystemException, PortalException {
 		String bookName = ParamUtil.getString(actionRequest,"bookName");
 		String bookDescription = ParamUtil.getString(actionRequest, "bookDescription");
 		long authorId = ParamUtil.getLong(actionRequest, "author");
-
 		Book book = BookLocalServiceUtil.createBook(CounterLocalServiceUtil.increment());
-		book.setBookName(bookName);
-		book.setBookDescription(bookDescription);
-		book.setAuthorId(authorId);
+		
+		Author tableAuthor = AuthorLocalServiceUtil.getAuthor(authorId);  
+	  	String authorName = tableAuthor.getAuthorName();
+	  	
+		if (bookName != null) {
+			book.setBookName(bookName);
+		} else {
+			SessionErrors.add(actionRequest, "bookNameisNull");
+			log.info(ADD_BOOK_NAME_NULL);
+		}
+		
+		if (bookDescription != null){
+			book.setBookDescription(bookDescription);
+		} else {
+			SessionErrors.add(actionRequest, "bookDescriptionisNull");
+			log.info(ADD_BOOK_DESCRIPTION_NULL);
+		} 
+		if (authorId != 0) {
+			book.setAuthorId(authorId);
+		} else {
+			SessionErrors.add(actionRequest, "bookAuthorIdisNull");
+			log.info(ADD_BOOK_AUTHOR_ID_NULL);
+		}
 		book=BookLocalServiceUtil.addBook(book);
-	
-//			Author author = AuthorLocalServiceUtil.getAuthor(book.getAuthorId());
-//			String authorName = author.getAuthorName();
-//			long authorId = ParamUtil.getLong(actionRequest, "author");
-//			long[] bookIds = new long[] {book.getBookId()};
-//			
-//			BookLocalServiceUtil.addAuthorBooks(authorId, bookIds);
 	}
 	
 	/**
@@ -202,6 +248,10 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 		Author author=AuthorLocalServiceUtil.createAuthor(CounterLocalServiceUtil.increment());
 		author.setAuthorName(authorName);
 		author=AuthorLocalServiceUtil.addAuthor(author);		
+		if (authorName == null) {
+			SessionErrors.add(actionRequest, "authorNameisNull");
+			log.info(ADD_AUTHOR_NULL);
+		}
 	}
 	
 	
@@ -215,12 +265,22 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 	 * @return Nothing
 	 */
 
-	public void deleteBook(ActionRequest actionRequest, ActionResponse actionResponse)
-			throws SystemException,	PortalException {
-		long bookId = ParamUtil.getLong(actionRequest, "bookId");
-		BookLocalServiceUtil.deleteBook(bookId);
-		SessionMessages.add(actionRequest, "deleted-book");
-		log.info(DELETE_SUCCESS);
+	public void deleteBook(ActionRequest actionRequest,	ActionResponse actionResponse)
+			throws SystemException, PortalException {
+		long bookId = ParamUtil.getLong(actionRequest, "bookId", 0);
+		if (bookId == 0) {
+			log.error("BookId is not defined");
+			SessionErrors.add(actionRequest, "bookIsNull");
+			return;
+		}
+		try {
+			BookLocalServiceUtil.deleteBook(bookId);
+			SessionMessages.add(actionRequest, "deleted-book");
+		} catch (PortalException | SystemException e) {
+			log.error("Failed to delete book with id: " + bookId + ". "	+ e.getMessage());
+			SessionErrors.add(actionRequest, "bookIsNull");
+		}
+
 	}
 	
 	/**
@@ -236,10 +296,15 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 	public void deleteAuthor(ActionRequest actionRequest, ActionResponse actionResponse)
 			throws SystemException,	PortalException {
 		long authorId = ParamUtil.getLong(actionRequest, "authorId");
-		AuthorLocalServiceUtil.deleteAuthor(authorId);
-		SessionMessages.add(actionRequest, "deleted-author");
-		log.info(DELETE_SUCCESS);
-	
+		if (authorId != 0) {
+			AuthorLocalServiceUtil.deleteAuthor(authorId);
+			SessionMessages.add(actionRequest, "deleted-author");
+			log.info(DELETE_SUCCESS);
+		} else {
+			SessionErrors.add(actionRequest, "authorIsNull");
+			log.info(DELETE_ERROR);
+		}
+		
 	}
 	
 	/**
@@ -254,11 +319,14 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 	
 	public void updateBook(ActionRequest actionRequest,	ActionResponse actionResponse)
 			throws SystemException,	PortalException {
-		long bookId = (Long) actionRequest.getAttribute("bookId");
-		Book book=BookLocalServiceUtil.createBook(CounterLocalServiceUtil.increment());
-	
+		long bookId = ParamUtil.getLong(actionRequest, "bookId", 0);
+		
+		Book book = BookLocalServiceUtil.createBook(CounterLocalServiceUtil.increment());
+		
 		book.setBookName(ParamUtil.getString(actionRequest, "bookName", ""));
 		book.setBookDescription(ParamUtil.getString(actionRequest, "description", ""));
+		book.setAuthorId(ParamUtil.getLong(actionRequest, "author", 0));
+		
 		book.setBookId(bookId);
 		
 		BookLocalServiceUtil.updateBook(book);
@@ -266,4 +334,5 @@ public class BookAndAuthor extends MVCPortlet  implements com.liferay.portal.ker
 		log.info(UPDATE_SUCCESS);
 		
 	}
+	
 }

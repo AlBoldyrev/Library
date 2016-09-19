@@ -34,7 +34,6 @@ public class BookSoap implements Serializable {
 		soapModel.setBookName(model.getBookName());
 		soapModel.setBookDescription(model.getBookDescription());
 		soapModel.setAuthorId(model.getAuthorId());
-		soapModel.setAuthorName(model.getAuthorName());
 
 		return soapModel;
 	}
@@ -119,17 +118,8 @@ public class BookSoap implements Serializable {
 		_authorId = authorId;
 	}
 
-	public String getAuthorName() {
-		return _authorName;
-	}
-
-	public void setAuthorName(String authorName) {
-		_authorName = authorName;
-	}
-
 	private long _bookId;
 	private String _bookName;
 	private String _bookDescription;
 	private long _authorId;
-	private String _authorName;
 }

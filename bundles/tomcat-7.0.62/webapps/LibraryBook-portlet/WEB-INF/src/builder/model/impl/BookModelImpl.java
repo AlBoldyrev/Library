@@ -65,10 +65,9 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 			{ "bookId", Types.BIGINT },
 			{ "bookName", Types.VARCHAR },
 			{ "bookDescription", Types.VARCHAR },
-			{ "authorId", Types.BIGINT },
-			{ "authorName", Types.VARCHAR }
+			{ "authorId", Types.BIGINT }
 		};
-	public static final String TABLE_SQL_CREATE = "create table librarian_Book (bookId LONG not null primary key,bookName VARCHAR(75) null,bookDescription VARCHAR(75) null,authorId LONG,authorName VARCHAR(75) null)";
+	public static final String TABLE_SQL_CREATE = "create table librarian_Book (bookId LONG not null primary key,bookName VARCHAR(75) null,bookDescription VARCHAR(75) null,authorId LONG)";
 	public static final String TABLE_SQL_DROP = "drop table librarian_Book";
 	public static final String ORDER_BY_JPQL = " ORDER BY book.bookId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY librarian_Book.bookId ASC";
@@ -101,7 +100,6 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 		model.setBookName(soapModel.getBookName());
 		model.setBookDescription(soapModel.getBookDescription());
 		model.setAuthorId(soapModel.getAuthorId());
-		model.setAuthorName(soapModel.getAuthorName());
 
 		return model;
 	}
@@ -170,7 +168,6 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 		attributes.put("bookName", getBookName());
 		attributes.put("bookDescription", getBookDescription());
 		attributes.put("authorId", getAuthorId());
-		attributes.put("authorName", getAuthorName());
 
 		return attributes;
 	}
@@ -199,12 +196,6 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 
 		if (authorId != null) {
 			setAuthorId(authorId);
-		}
-
-		String authorName = (String)attributes.get("authorName");
-
-		if (authorName != null) {
-			setAuthorName(authorName);
 		}
 	}
 
@@ -274,22 +265,6 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 		return _originalAuthorId;
 	}
 
-	@JSON
-	@Override
-	public String getAuthorName() {
-		if (_authorName == null) {
-			return StringPool.BLANK;
-		}
-		else {
-			return _authorName;
-		}
-	}
-
-	@Override
-	public void setAuthorName(String authorName) {
-		_authorName = authorName;
-	}
-
 	public long getColumnBitmask() {
 		return _columnBitmask;
 	}
@@ -325,7 +300,6 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 		bookImpl.setBookName(getBookName());
 		bookImpl.setBookDescription(getBookDescription());
 		bookImpl.setAuthorId(getAuthorId());
-		bookImpl.setAuthorName(getAuthorName());
 
 		bookImpl.resetOriginalValues();
 
@@ -409,20 +383,12 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 
 		bookCacheModel.authorId = getAuthorId();
 
-		bookCacheModel.authorName = getAuthorName();
-
-		String authorName = bookCacheModel.authorName;
-
-		if ((authorName != null) && (authorName.length() == 0)) {
-			bookCacheModel.authorName = null;
-		}
-
 		return bookCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(11);
+		StringBundler sb = new StringBundler(9);
 
 		sb.append("{bookId=");
 		sb.append(getBookId());
@@ -432,8 +398,6 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 		sb.append(getBookDescription());
 		sb.append(", authorId=");
 		sb.append(getAuthorId());
-		sb.append(", authorName=");
-		sb.append(getAuthorName());
 		sb.append("}");
 
 		return sb.toString();
@@ -441,7 +405,7 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(19);
+		StringBundler sb = new StringBundler(16);
 
 		sb.append("<model><model-name>");
 		sb.append("builder.model.Book");
@@ -463,10 +427,6 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 			"<column><column-name>authorId</column-name><column-value><![CDATA[");
 		sb.append(getAuthorId());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>authorName</column-name><column-value><![CDATA[");
-		sb.append(getAuthorName());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -481,7 +441,6 @@ public class BookModelImpl extends BaseModelImpl<Book> implements BookModel {
 	private long _authorId;
 	private long _originalAuthorId;
 	private boolean _setOriginalAuthorId;
-	private String _authorName;
 	private long _columnBitmask;
 	private Book _escapedModel;
 }

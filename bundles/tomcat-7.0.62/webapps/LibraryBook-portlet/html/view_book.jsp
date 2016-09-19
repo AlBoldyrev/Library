@@ -19,5 +19,6 @@
 <aui:form>
 	<aui:model-context bean="${bookEntry}" model="<%=Book.class%>" />
 	<aui:input name="bookName" label="book-Name" disabled="true"/>
-	<aui:input type="textarea" name="bookDescription" label="description" disabled="true"/>	
+	<aui:input type="textarea" name="bookDescription" label="Description" disabled="true"/>	
+	<aui:input name="authorName" label="Author Name" disabled="true"/>	
 </aui:form>

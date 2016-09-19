@@ -115,21 +115,6 @@ public interface BookModel extends BaseModel<Book> {
 	 */
 	public void setAuthorId(long authorId);
 
-	/**
-	 * Returns the author name of this book.
-	 *
-	 * @return the author name of this book
-	 */
-	@AutoEscape
-	public String getAuthorName();
-
-	/**
-	 * Sets the author name of this book.
-	 *
-	 * @param authorName the author name of this book
-	 */
-	public void setAuthorName(String authorName);
-
 	@Override
 	public boolean isNew();
 

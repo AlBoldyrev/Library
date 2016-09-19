@@ -4,13 +4,11 @@
 	<model name="builder.model.Author">
 		<field name="authorId" type="long" />
 		<field name="authorName" type="String" />
-		<field name="numberOfBooks" type="long" />
 	</model>
 	<model name="builder.model.Book">
 		<field name="bookId" type="long" />
 		<field name="bookName" type="String" />
 		<field name="bookDescription" type="String" />
 		<field name="authorId" type="long" />
-		<field name="authorName" type="String" />
 	</model>
 </model-hints>

@@ -64,10 +64,9 @@ public class AuthorModelImpl extends BaseModelImpl<Author>
 	public static final String TABLE_NAME = "librarian_Author";
 	public static final Object[][] TABLE_COLUMNS = {
 			{ "authorId", Types.BIGINT },
-			{ "authorName", Types.VARCHAR },
-			{ "numberOfBooks", Types.BIGINT }
+			{ "authorName", Types.VARCHAR }
 		};
-	public static final String TABLE_SQL_CREATE = "create table librarian_Author (authorId LONG not null primary key,authorName VARCHAR(75) null,numberOfBooks LONG)";
+	public static final String TABLE_SQL_CREATE = "create table librarian_Author (authorId LONG not null primary key,authorName VARCHAR(75) null)";
 	public static final String TABLE_SQL_DROP = "drop table librarian_Author";
 	public static final String ORDER_BY_JPQL = " ORDER BY author.authorId ASC";
 	public static final String ORDER_BY_SQL = " ORDER BY librarian_Author.authorId ASC";
@@ -95,7 +94,6 @@ public class AuthorModelImpl extends BaseModelImpl<Author>
 
 		model.setAuthorId(soapModel.getAuthorId());
 		model.setAuthorName(soapModel.getAuthorName());
-		model.setNumberOfBooks(soapModel.getNumberOfBooks());
 
 		return model;
 	}
@@ -162,7 +160,6 @@ public class AuthorModelImpl extends BaseModelImpl<Author>
 
 		attributes.put("authorId", getAuthorId());
 		attributes.put("authorName", getAuthorName());
-		attributes.put("numberOfBooks", getNumberOfBooks());
 
 		return attributes;
 	}
@@ -179,12 +176,6 @@ public class AuthorModelImpl extends BaseModelImpl<Author>
 
 		if (authorName != null) {
 			setAuthorName(authorName);
-		}
-
-		Long numberOfBooks = (Long)attributes.get("numberOfBooks");
-
-		if (numberOfBooks != null) {
-			setNumberOfBooks(numberOfBooks);
 		}
 	}
 
@@ -213,17 +204,6 @@ public class AuthorModelImpl extends BaseModelImpl<Author>
 	@Override
 	public void setAuthorName(String authorName) {
 		_authorName = authorName;
-	}
-
-	@JSON
-	@Override
-	public long getNumberOfBooks() {
-		return _numberOfBooks;
-	}
-
-	@Override
-	public void setNumberOfBooks(long numberOfBooks) {
-		_numberOfBooks = numberOfBooks;
 	}
 
 	@Override
@@ -255,7 +235,6 @@ public class AuthorModelImpl extends BaseModelImpl<Author>
 
 		authorImpl.setAuthorId(getAuthorId());
 		authorImpl.setAuthorName(getAuthorName());
-		authorImpl.setNumberOfBooks(getNumberOfBooks());
 
 		authorImpl.resetOriginalValues();
 
@@ -322,21 +301,17 @@ public class AuthorModelImpl extends BaseModelImpl<Author>
 			authorCacheModel.authorName = null;
 		}
 
-		authorCacheModel.numberOfBooks = getNumberOfBooks();
-
 		return authorCacheModel;
 	}
 
 	@Override
 	public String toString() {
-		StringBundler sb = new StringBundler(7);
+		StringBundler sb = new StringBundler(5);
 
 		sb.append("{authorId=");
 		sb.append(getAuthorId());
 		sb.append(", authorName=");
 		sb.append(getAuthorName());
-		sb.append(", numberOfBooks=");
-		sb.append(getNumberOfBooks());
 		sb.append("}");
 
 		return sb.toString();
@@ -344,7 +319,7 @@ public class AuthorModelImpl extends BaseModelImpl<Author>
 
 	@Override
 	public String toXmlString() {
-		StringBundler sb = new StringBundler(13);
+		StringBundler sb = new StringBundler(10);
 
 		sb.append("<model><model-name>");
 		sb.append("builder.model.Author");
@@ -358,10 +333,6 @@ public class AuthorModelImpl extends BaseModelImpl<Author>
 			"<column><column-name>authorName</column-name><column-value><![CDATA[");
 		sb.append(getAuthorName());
 		sb.append("]]></column-value></column>");
-		sb.append(
-			"<column><column-name>numberOfBooks</column-name><column-value><![CDATA[");
-		sb.append(getNumberOfBooks());
-		sb.append("]]></column-value></column>");
 
 		sb.append("</model>");
 
@@ -372,6 +343,5 @@ public class AuthorModelImpl extends BaseModelImpl<Author>
 	private static Class<?>[] _escapedModelInterfaces = new Class[] { Author.class };
 	private long _authorId;
 	private String _authorName;
-	private long _numberOfBooks;
 	private Author _escapedModel;
 }

@@ -320,7 +320,6 @@ public class AuthorPersistenceImpl extends BasePersistenceImpl<Author>
 
 		authorImpl.setAuthorId(author.getAuthorId());
 		authorImpl.setAuthorName(author.getAuthorName());
-		authorImpl.setNumberOfBooks(author.getNumberOfBooks());
 
 		return authorImpl;
 	}
