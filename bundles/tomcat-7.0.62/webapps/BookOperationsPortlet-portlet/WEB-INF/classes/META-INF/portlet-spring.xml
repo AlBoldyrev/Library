@@ -1,0 +1,10 @@
+<?xml version="1.0"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" default-destroy-method="destroy" default-init-method="afterPropertiesSet" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd">
+	<bean id="com.softwerke.services.service.AuthorLocalService" class="com.softwerke.services.service.impl.AuthorLocalServiceImpl" />
+	<bean id="com.softwerke.services.service.AuthorService" class="com.softwerke.services.service.impl.AuthorServiceImpl" />
+	<bean id="com.softwerke.services.service.persistence.AuthorPersistence" class="com.softwerke.services.service.persistence.AuthorPersistenceImpl" parent="basePersistence" />
+	<bean id="com.softwerke.services.service.BookLocalService" class="com.softwerke.services.service.impl.BookLocalServiceImpl" />
+	<bean id="com.softwerke.services.service.BookService" class="com.softwerke.services.service.impl.BookServiceImpl" />
+	<bean id="com.softwerke.services.service.persistence.BookPersistence" class="com.softwerke.services.service.persistence.BookPersistenceImpl" parent="basePersistence" />
+</beans>

@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+
+<model-hints>
+	<model name="com.softwerke.services.model.Author">
+		<field name="authorId" type="long" />
+		<field name="authorName" type="String" />
+	</model>
+	<model name="com.softwerke.services.model.Book">
+		<field name="bookId" type="long" />
+		<field name="bookName" type="String" />
+		<field name="bookDescription" type="String" />
+		<field name="authorId" type="long" />
+	</model>
+</model-hints>

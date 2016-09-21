@@ -1,0 +1,1 @@
+create index IX_C9A74A43 on bookandauthoroperations_Book (authorId);
